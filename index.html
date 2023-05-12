@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cantores</title>
+    <!-- Importar o Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <!-- Importar o JavaScript do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1>Cantores</h1>
+
+      <!-- Formulário para adicionar um novo cantor -->
+      <form>
+        <div class="form-group">
+          <label for="nome">Nome:</label>
+          <input type="text" class="form-control" id="nome" required />
+        </div>
+        <div class="form-group">
+          <label for="terca">Terça:</label>
+          <input type="text" class="form-control" id="terca" required />
+        </div>
+        <div class="form-group">
+          <label for="quinta">Quinta:</label>
+          <input type="text" class="form-control" id="quinta" required />
+        </div>
+        <div class="form-group">
+          <label for="sexta">Sexta:</label>
+          <input type="text" class="form-control" id="sexta" required />
+        </div>
+        <div class="form-group">
+          <label for="domingo">Domingo:</label>
+          <input type="text" class="form-control" id="domingo" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Adicionar</button>
+      </form>
+
+      <!-- Tabela de cantores -->
+      <h2 class="mt-5">Lista de Cantores</h2>
+      <table class="table" id="tabela-cantores">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Terça</th>
+            <th>Quinta</th>
+            <th>Sexta</th>
+            <th>Domingo</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <!-- Botão para limpar os dados -->
+      <button class="btn btn-danger" onclick="limparLocalStorage()">
+        Limpar Dados
+      </button>
+
+      <!-- Mensagem de sucesso -->
+      <div
+        class="alert alert-success mt-5"
+        role="alert"
+        id="mensagem-sucesso"
+        style="display: none"
+      >
+        Cantor adicionado com sucesso!
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Array de cantores
+      let cantores = []
+
+      // Função que adiciona um novo cantor
+      function adicionarCantor(event) {
+        event.preventDefault()
+
+        // Obter os valores do formulário
+        const nome = document.getElementById('nome').value
+        const terca = document.getElementById('terca').value
+        const quinta = document.getElementById('quinta').value
+        const sexta = document.getElementById('sexta').value
+        const domingo = document.getElementById('domingo').value
+        // Criar o objeto do cantor
+        const cantor = {
+          nome: nome,
+          terca: terca,
+          quinta: quinta,
+          sexta: sexta,
+          domingo: domingo
+        }
+
+        // Adicionar o cantor ao array de cantores
+        cantores.push(cantor)
+
+        // Atualizar a tabela de cantores
+        atualizarTabela()
+
+        // Exibir a mensagem de sucesso
+        const mensagem = document.getElementById('mensagem-sucesso')
+        mensagem.style.display = 'block'
+
+        // Limpar os valores do formulário
+        document.getElementById('nome').value = ''
+        document.getElementById('terca').value = ''
+        document.getElementById('quinta').value = ''
+        document.getElementById('sexta').value = ''
+        document.getElementById('domingo').value = ''
+
+        // Armazenar o array de cantores no Local Storage
+        localStorage.setItem('cantores', JSON.stringify(cantores))
+      }
+
+      // Função que atualiza a tabela de cantores
+      function atualizarTabela() {
+        const tabela = document.getElementById('tabela-cantores')
+        const tbody = tabela.getElementsByTagName('tbody')[0]
+
+        // Limpar o corpo da tabela
+        tbody.innerHTML = ''
+
+        // Adicionar cada cantor à tabela
+        cantores.forEach(function (cantor) {
+          const tr = document.createElement('tr')
+          tr.innerHTML = `
+      <td>${cantor.nome}</td>
+      <td>${cantor.terca}</td>
+      <td>${cantor.quinta}</td>
+      <td>${cantor.sexta}</td>
+      <td>${cantor.domingo}</td>
+    `
+          tbody.appendChild(tr)
+        })
+      }
+
+      // Função que limpa o Local Storage e atualiza a tabela
+      function limparLocalStorage() {
+        localStorage.clear()
+        cantores = []
+        atualizarTabela()
+      }
+
+      // Verificar se há dados no Local Storage
+      const cantoresLocalStorage = localStorage.getItem('cantores')
+      if (cantoresLocalStorage) {
+        cantores = JSON.parse(cantoresLocalStorage)
+        atualizarTabela()
+      }
+
+      // Adicionar o evento de submit ao formulário
+      const form = document.getElementsByTagName('form')[0]
+      form.addEventListener('submit', adicionarCantor)
+    </script>
+  </body>
+</html>
