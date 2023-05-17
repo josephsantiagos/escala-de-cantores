@@ -73,7 +73,6 @@
         Cantor adicionado com sucesso!
       </div>
     </div>
-
     <!-- JavaScript -->
     <script>
       // Array de cantores
@@ -157,7 +156,26 @@
 
       // Adicionar o evento de submit ao formulário
       const form = document.getElementsByTagName('form')[0]
-      form.addEventListener('submit', adicionarCantor)
+      form.addEventListener('submit', adicionarCantor);
+
+
+
+      
+
+
+function limparLocalStorage() {
+  const nomeUsuario = prompt("Digite o nome de usuário:")
+  const senhaUsuario = prompt("Digite a senha:")
+
+  if (nomeUsuario === "fernando" && senhaUsuario === "fernando1020") {
+    localStorage.clear()
+    alert("Os dados foram limpos com sucesso!")
+  } else {
+    alert("As credenciais fornecidas estão incorretas. Tente novamente.")
+  }
+}
+</script>
+
     </script>
   </body>
 </html>
